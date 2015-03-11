@@ -155,3 +155,6 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'blog/static'),
 )
+
+# Memcached config
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
