@@ -16,16 +16,18 @@ $ pip install -r requirements.txt
 ```
 
 - Create database model:
-```$ python manage.py syncdb```
-```$ python manage.py schemamigration --initial blog```
-```$ python manage.py migrate blog```
+```
+$ python manage.py syncdb
+$ python manage.py schemamigration --initial blog
+$ python manage.py migrate blog
+```
 
 - Run Django server: 
 ```
 $ python manage.py runserver
 ```
 
-If you using it local you can access it on http://localhost:8000 and http://localhost:8000/admin
+If you using it local you can access it on [http://localhost:8000](http://localhost:8000/) and [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ### Things you should check
 
