@@ -1,0 +1,63 @@
+{% extends "blog/includes/base.html" %}
+
+    {% block title %} Blog entries {% endblock %}
+
+    {% load navigation_box %}
+
+    {% block content %}
+
+        {% if object_list %}
+            {% for post in object_list %}
+            <div class="post">
+            <h2>Posts found:</h2>
+
+            <h2>
+            <a href="{{ post.get_absolute_url  }}"> 
+            <a href="{{ post.get_absolute_url  }}">{{ post.title }}</a>
+            </h2>
+    
+            <h4>
+            <i class="glyphicon glyphicon-calendar"></i> {{ post.pub_date }} / 
+            <a href="{{post.category.get_absolute_url }}"> {{ post.category.name }}</a> / <i class="glyphicon glyphicon-heart-empty">
+            </i> 
+
+            {% load disqus_tags %}
+            <a href="{{ post.get_absolute_url }}#disqus_thread" data-disqus-identifier="{{ object.id }}">Reply</a>
+            {% disqus_num_replies %}</a></h4></i>
+
+            {% if post.category.name == 'Code' %}
+
+            <p><a href="{{ post.get_absolute_url }}"><span class="label label-danger">grab the code!</span></a></p>
+
+            {% else %}
+
+            <p>{{ post.desc|safe|truncatechars:200 }}</p>
+
+            {% endif %}
+
+            {% for tag in post.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">
+            <span class="label label-success"><i class="glyphicon glyphicon-tag"></i> {{ tag.name }}</span></a></i>
+            {% endfor %}
+
+            </div>
+
+            <hr>
+
+            {% endfor %}
+        
+        {% else %}
+            <h2>Nothing found. Try something else.</h2>
+        {% endif %}
+
+        <ul class="pager pull-right">
+        {% if page_obj.has_previous %}
+        <li class="previous"><a href="/{{ page_obj.previous_page_number }}/">Previous</a></li>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <li class="next"><a href="/{{ page_obj.next_page_number }}/">Show more</a></li>
+        {% endif %}
+        </ul>
+
+    {% endblock %}

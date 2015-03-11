@@ -1,0 +1,17 @@
+{% extends "blog/includes/base.html" %}
+
+    {% block title %} Categories {% endblock %}
+
+    {% block content %}
+
+	<section>
+		<ul class="list-unstyled">
+
+		{% for category in object_list %}
+		<li><a href="{% url 'categoryList' %}{{ category.slug }}/">{{ category.name }}</a></li>
+		{% endfor %}
+		
+		</ul>
+	</section>
+
+    {% endblock %}

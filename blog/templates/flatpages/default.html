@@ -1,0 +1,14 @@
+{% extends "blog/includes/base.html" %}
+	
+	{% block title %} {{ flatpage.title }} {% endblock %}
+	{% load custom_markdown %}
+	{% block content %}
+
+		<div class="post">
+		<h1>{{ flatpage.title }}</h1>
+
+		{{ flatpage.content|safe|custom_markdown }}
+
+		</div>
+
+	{% endblock %}

@@ -1,0 +1,161 @@
+{% load navigation_box %}
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}{% endblock %} - dropSQL</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <!-- Load static files -->
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'bower_components/html5-boilerplate/css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'bower_components/html5-boilerplate/css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/code.css' %}">
+    </head>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Header nav -->
+        <div class="navbar navbar-static-top navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav navbar-nav">
+                        <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-link"></i> dropSQL</a>
+                        <li class="list-inline"><a href="/">Home</a></li>
+                        {% load flatpages %}
+                        {% get_flatpages as flatpages %}
+                        {% for flatpage in flatpages %}
+                        <li><a href="{{flatpage.url}}">{{ flatpage.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body content -->
+        <div class="container">
+
+            {% block header %}
+            <div class="jumbotron">
+                <p class="label label-success"><span class="glyphicon glyphicon-asterisk"></span> blogging with [django]</p>
+                <p class="label label-default">[batteries included]</p>
+            </div>
+            {% endblock %}
+
+            <div class="row">
+
+                <!-- Show body content -->
+                <div class="col-xs-12 col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                
+                <!-- Show sidebar -->
+                <div class="col-xs-6 col-md-4">
+                    {% block nav %}
+
+                    <!-- Search box -->
+                    <h3><i class="glyphicon glyphicon-search"></i> Search</h3>
+                    <form action="/search" method="GET" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" name="q" class="form-control" value="Search for..">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <br></br>
+
+                    <!-- Categories -->
+                    <h3><i class="glyphicon glyphicon-menu-hamburger"></i> Categories</h3>
+                    <ul class="list-unstyled">
+                        {% get_blog_categories as categories %}
+                        {% for category in categories %}
+                        <li>
+                        <a href="{% url 'blog.views.categoryList' %}{{ category.slug }}/" title="Browse this category">
+                        <i class="glyphicon glyphicon-menu-right"></i> {{ category.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Find me on -->
+                    <h3><i class="glyphicon glyphicon-thumbs-up"></i> Find me on</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#">
+                        <i class="glyphicon glyphicon-menu-right"></i> LinkedIn</a>
+                        </li>
+                        
+                        <li><a href="#">
+                        <i class="glyphicon glyphicon-menu-right"></i> Github</a>
+                        </li>
+                    </ul>
+
+                    <!-- Recent posts -->
+                    <h3><i class="glyphicon glyphicon-sort-by-alphabet"></i> Recent posts</h3>
+                    <ul class="list-unstyled">
+                        {% get_recent_posts 5 as recent_posts %}
+                        {% for post in recent_posts %}
+                        <li> 
+                            <a href="{{ post.get_absolute_url }}" title="View this post">
+                            <h4><span class="label label-info">{{ post.category }}</span> {{ post.title|truncatechars:34 }}</a></h4>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Tags -->
+                    <h3><i class="glyphicon glyphicon-tag"></i> Tags</h3>
+                    <ul class="list-inline">
+                        {% get_blog_tags as tags %}
+                        {% for tag in tags %}
+                        <li class="btn btn-default">
+                            <a href="{% url 'blog.views.tagsList' %}{{ tag.slug }}/"><i class="glyphicon glyphicon-menu-right"></i> {{ tag.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Show recent comments -->
+                    <h3><i class="glyphicon glyphicon-comment"></i> Recent comments</h3>
+                    {% load disqus_tags %}
+                    {% disqus_recent_comments shortname 5 50 0 24 %}
+
+                    {% endblock %} <!-- END nav block ->
+
+                </div><!-- END sidebar -->
+            </div><!-- END row -->
+        </div><!-- END body -->
+
+        <!-- Show footer -->
+        <div class="container footer">
+            <div class="row">
+                <p>Copyright <span class="label label-info">{% load site %} {% site_name %}</span> &copy; {% now "Y" %} | This blog is powered by 
+                <span class="label label-warning">Django</span></p>
+            </div>
+            <hr>
+        </div>
+
+        <!-- Scripts --> 
+        <script>window.jQuery || document.write('<script src="{% static 'bower_components/html5-boilerplate/js/vendor/jquery-1.10.2.min.js' %}"><\/script>')</script>
+        <script src="{% static 'bower_components/html5-boilerplate/js/plugins.js' %}"></script>
+        <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js' %}"></script>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5073346f51b846f2" async="async"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+       
+    </body>
+</html>
