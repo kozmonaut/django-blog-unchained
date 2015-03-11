@@ -16,9 +16,11 @@ $ pip install -r requirements.txt
 ```
 
 - Create database model:
-```$ python manage.py syncdb```
-```$ python manage.py schemamigration --initial blog```
-```$ python manage.py migrate blog```
+```
+$ python manage.py syncdb
+$ python manage.py schemamigration --initial blog
+$ python manage.py migrate blog
+```
 
 - Run Django server: 
 ```
